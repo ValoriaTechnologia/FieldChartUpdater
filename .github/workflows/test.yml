@@ -1,0 +1,48 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run pytest
+        run: pytest tests/ -v
+
+  action-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare test file
+        run: cp .github/test-values.yaml ./test-values-workflow.yaml
+
+      - name: Run Edit YAML action
+        uses: ./
+        with:
+          file: ./test-values-workflow.yaml
+          edits: |
+            [
+              {"path": "image.tag", "value": "test-v1.0"},
+              {"path": "replicaCount", "value": 3}
+            ]
+
+      - name: Verify image.tag
+        run: grep -q 'tag: test-v1.0' ./test-values-workflow.yaml
+
+      - name: Verify replicaCount
+        run: grep -q 'replicaCount: 3' ./test-values-workflow.yaml
