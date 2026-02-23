@@ -1,0 +1,15 @@
+name: 'Edit YAML fields'
+description: 'Edit one or more fields in a YAML file (equivalent to yq -i). Uses Python in Docker.'
+inputs:
+  file:
+    required: true
+    description: 'Path to the YAML file to modify (e.g. ./value.yaml or charts/app/values.yaml). Relative to the workspace.'
+  edits:
+    required: true
+    description: 'JSON array of edits: [{"path": "key.nested", "value": "value"}, ...]. Example: [{"path": "image.tag", "value": "valu"}]'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.file }}
+    - ${{ inputs.edits }}
