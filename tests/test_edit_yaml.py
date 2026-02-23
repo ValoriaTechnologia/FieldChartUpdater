@@ -58,14 +58,17 @@ def test_set_nested_preserves_types():
 
 
 def _run_edit_yaml(file_path: str, edits: list) -> subprocess.CompletedProcess:
+    """Run edit_yaml.py without GITHUB_WORKSPACE so tmp_path (outside repo) is allowed."""
     edits_json = json.dumps(edits)
     root = Path(__file__).parent.parent
     script = root / "edit_yaml.py"
+    env = {k: v for k, v in os.environ.items() if k != "GITHUB_WORKSPACE"}
     return subprocess.run(
         [sys.executable, str(script), file_path, edits_json],
         capture_output=True,
         text=True,
         cwd=str(root),
+        env=env,
     )
 
 
@@ -91,15 +94,13 @@ def test_main_invalid_json(tmp_path):
     yaml_file = tmp_path / "values.yaml"
     yaml_file.write_text("a: 1\n")
 
-    result = _run_edit_yaml(str(yaml_file), "not valid json")  # type: ignore[arg-type]
-    # edits is passed as json.dumps(edits), so if we pass a string, it becomes '"not valid json"'
-    # which is valid JSON. Let me fix: we need to pass invalid JSON. The _run_edit_yaml
-    # always does json.dumps(edits). So for invalid JSON we need to call the script directly.
+    env = {k: v for k, v in os.environ.items() if k != "GITHUB_WORKSPACE"}
     result = subprocess.run(
         [sys.executable, str(Path(__file__).parent.parent / "edit_yaml.py"), str(yaml_file), "{"],
         capture_output=True,
         text=True,
         cwd=str(Path(__file__).parent.parent),
+        env=env,
     )
 
     assert result.returncode == 1
