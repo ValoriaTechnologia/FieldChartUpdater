@@ -40,7 +40,7 @@ jobs:
             ]
 
       - name: Verify image.tag
-        run: grep -q 'tag: test-v1.0' ./test-values-workflow.yaml
+        run: "grep -q 'tag: test-v1.0' ./test-values-workflow.yaml"
 
       - name: Verify replicaCount
-        run: grep -q 'replicaCount: 3' ./test-values-workflow.yaml
+        run: "grep -q 'replicaCount: 3' ./test-values-workflow.yaml"
