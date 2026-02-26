@@ -28,7 +28,7 @@ jobs:
     with:
       tag: ${{ needs.bump-job.outputs.new_tag }}
   release-job:
-    if: needs.build-push-job.outputs.tag != ''
+    if: needs.bump-job.outputs.new_tag != ''
     needs:
       - build-push-job
       - bump-job
