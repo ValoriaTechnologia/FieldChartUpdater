@@ -38,7 +38,7 @@ jobs:
         uses: ValoriaTechnologia/FieldChartUpdater@v0.0.2
         with:
           file: ./action.yaml
-          edits: '[{"path": "runs.image", "value": "ghcr.io/valoriatechnologia/field-chart-updater:${{ steps.tag.outputs.new_tag }}"}]'
+          edits: '[{"path": "runs.image", "value": "docker://ghcr.io/valoriatechnologia/field-chart-updater:${{ steps.tag.outputs.new_tag }}"}]'
 
       - name: Commit version bump
         run: |
