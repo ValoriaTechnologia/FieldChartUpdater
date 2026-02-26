@@ -11,7 +11,7 @@ jobs:
       - name: Update action.yml docker version
         uses: ValoriaTechnologia/FieldChartUpdater@v0.0.2
         with:
-          file: ./action.yml
+          file: ./action.yaml
           edits: '[{"path": "runs.image", "value": "Dockerfile"}]'
 
       - name: Prepare test file
