@@ -1,30 +1,18 @@
-name: Test
-
+name: "Integration Tests"
 on:
-  push:
-    branches: [main]
+  workflow_call:
 
 jobs:
-  unit-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
-        run: pip install -r requirements-dev.txt
-
-      - name: Run pytest
-        run: pytest tests/ -v
-
   action-integration:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Update action.yml docker version
+        uses: ValoriaTechnologia/FieldChartUpdater@v0.0.2
+        with:
+          file: ./action.yml
+          edits: '[{"path": "runs.image", "value": "Dockerfile"}]'
 
       - name: Prepare test file
         run: cp .github/test-values.yaml ./test-values-workflow.yaml
