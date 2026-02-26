@@ -12,7 +12,7 @@ inputs:
       ...]. Example: [{"path": "image.tag", "value": "valu"}]'
 runs:
   using: docker
-  image: docker://ghcr.io/valoriatechnologia/field-chart-updater:v0.1.0
+  image: docker://ghcr.io/valoriatechnologia/field-chart-updater:v0.1.1
   args:
   - ${{ inputs.file }}
   - ${{ inputs.edits }}
