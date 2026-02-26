@@ -1,15 +1,18 @@
-name: 'Edit YAML fields'
-description: 'Edit one or more fields in a YAML file (equivalent to yq -i). Uses Python in Docker.'
+name: Edit YAML fields
+description: Edit one or more fields in a YAML file (equivalent to yq -i). Uses Python
+  in Docker.
 inputs:
   file:
     required: true
-    description: 'Path to the YAML file to modify (e.g. ./value.yaml or charts/app/values.yaml). Relative to the workspace.'
+    description: Path to the YAML file to modify (e.g. ./value.yaml or charts/app/values.yaml).
+      Relative to the workspace.
   edits:
     required: true
-    description: 'JSON array of edits: [{"path": "key.nested", "value": "value"}, ...]. Example: [{"path": "image.tag", "value": "valu"}]'
+    description: 'JSON array of edits: [{"path": "key.nested", "value": "value"},
+      ...]. Example: [{"path": "image.tag", "value": "valu"}]'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: docker
+  image: ghcr.io/valoriatechnologia/field-chart-updater:v0.0.3
   args:
-    - ${{ inputs.file }}
-    - ${{ inputs.edits }}
+  - ${{ inputs.file }}
+  - ${{ inputs.edits }}
